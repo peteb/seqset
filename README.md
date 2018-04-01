@@ -34,15 +34,23 @@ The data structure is basically a binary self-balancing tree where the nodes are
 
 ## Analysis
 
-| Operation                                   | Time complexity | Space complexity |
-------------------------------------------------------------------------------------
-| Insert (consecutive numbers)                | O(1)            | O(1)             |
-| Insert (random non-consecutive numbers)     | O(log n)        | O(n)             |
-| Allocate (get next + insert)                | O(1)            | O(1)             |
-| Lookup                                      | O(log n)        |                  |
-| Fetch min/max                               | O(log n)        |                  |
-------------------------------------------------------------------------------------
+Operation                                   | Time complexity | Space complexity
+--------------------------------------------|-----------------|-----------------
+Insert (consecutive numbers)                | O(1)            | O(1)
+Insert (random non-consecutive numbers)     | O(log n)        | O(n)
+Allocate (get next + insert)                | O(1)            | O(1)
+Lookup                                      | O(log n)        |
+Fetch min/max                               | O(log n)        |
+
 
 ## TODO
 
 * Investigate why the height of the tree doesn't completely follow ceil(log2(N)). It's probably due to the balancing; the number of cases could be extended to 4 like in AVL
+
+## Copyright
+
+Copyright 2018, Iostream Solutions AB.
+Released under the terms of the MIT license (see `LICENSE`).
+
+Created by
+[Peter Backman](http://www.iostream.cc/).
