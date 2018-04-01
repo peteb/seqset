@@ -2,6 +2,28 @@
 
 A data structure for allocating new unused numbers quickly and that optimizes for sequential integer runs (ie, 1, 2, 3, 4, ...)
 
+```java
+final SeqSet s = new SeqSet();
+
+// Insert first run of integers
+s.insert(1);
+s.insert(2);
+s.insert(3);
+
+// Second run
+s.insert(5);
+s.insert(6);
+
+// Check the nodes in the tree
+s.size(); // Returns 2
+
+// Take the next free value, O(1)
+s.take(); // Returns 4
+
+// Check that the nodes have been merged
+s.size(); // Returns 1
+```
+
 ## Motivation
 
 Often I see myself trying to get the next number of something; an object, a message, etc., and often I want to support both randomly allocated numbers (ie, by humans) as well as computer generated consecutive numbers. So I implemented this structure.
