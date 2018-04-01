@@ -9,6 +9,9 @@ import static org.hamcrest.collection.IsIn.isIn;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class SeqSetTest {
+    /**
+     * Test various scenarios for the #next method.
+     */
     @Test
     public void nextScenarios() {
         final SeqSet set = new SeqSet();
@@ -30,12 +33,16 @@ public class SeqSetTest {
         assertThat(set.next(), equalTo(3));
     }
 
+    /**
+     * Verifies that inserting sequential numbers doesn't create
+     * extra nodes in the tree.
+     */
     @Test
     public void sequentialInserts() {
         // Given
         final SeqSet set = new SeqSet();
 
-        for (int i = 0; i < 1_000; ++i) {
+        for (int i = 0; i < 1000; ++i) {
             set.insert(i);
         }
 
@@ -45,6 +52,10 @@ public class SeqSetTest {
         assertThat(set.next(), equalTo(1_000));
     }
 
+    /**
+     * Verifies that the number of nodes is equal to the number of sequential runs of integers, that #take-ing
+     * new values returns the gap integers, and that the size of the tree decreases when gaps are filled.
+     */
     @Test
     public void gappedInserts() {
         // Given
@@ -68,6 +79,27 @@ public class SeqSetTest {
         assertThat(set.size(), equalTo(1));
     }
 
+    /**
+     * Verifies the worst case; when we've got one gap per integer.
+     */
+    @Test
+    public void evenlyGappedInserts() {
+        // Given
+        final SeqSet set = new SeqSet();
+
+        for (int i = 0; i < 100; i += 2) {
+            set.insert(i);
+        }
+
+        System.out.println(set.toString());
+        // When/then
+        assertThat(set.size(), equalTo(50));  // One node per run, ie, per integer
+        assertThat(set.height(), equalTo(8)); // Important to catch balancing issues. It's not perfect ceil(log2(50)) though...
+    }
+
+    /**
+     * Verifies the seqset against an ordinary set.
+     */
     @Test
     public void referenceTesting() {
         // Given
@@ -75,7 +107,7 @@ public class SeqSetTest {
         int numIterations = 50_000;
         final Set<Integer> takenNumbers = new HashSet<>();
         for (int i = 0; i < numIterations; ++i) {
-            takenNumbers.add(random.nextInt(numIterations));
+            takenNumbers.add(random.nextInt(100_000));
         }
 
         final SeqSet set = new SeqSet();
@@ -107,11 +139,11 @@ public class SeqSetTest {
     }
 
     @Test
-    public void perfInsertRandomValues2() {
+    public void perfInsertRandomValuesTreeSet() {
         // Given
         final Random random = new Random(1);
         int numIterations = 500_000;
-        final TreeSet<Integer> set = new TreeSet<>();
+        final Set<Integer> set = new TreeSet<>();
 
         for (int i = 0; i < numIterations; ++i) {
             set.add(random.nextInt(numIterations));
@@ -119,9 +151,9 @@ public class SeqSetTest {
     }
 
     @Test
-    public void perfInsertRandomValues11() {
+    public void perfInsertSequentialValuesSeqSet() {
         // Given
-        int numIterations = 500_000;
+        int numIterations = 5_000_000;
         final SeqSet set = new SeqSet();
 
         for (int i = 0; i < numIterations; ++i) {
@@ -130,10 +162,10 @@ public class SeqSetTest {
     }
 
     @Test
-    public void perfInsertRandomValues22() {
+    public void perfInsertSequentialValuesTreeSet() {
         // Given
-        int numIterations = 500_000;
-        final TreeSet<Integer> set = new TreeSet<>();
+        int numIterations = 5_000_000;
+        final Set<Integer> set = new HashSet<>();
 
         for (int i = 0; i < numIterations; ++i) {
             set.add(i);

@@ -1,7 +1,10 @@
 package cc.iostream.algos;
 
 /**
- * Sequence Set.
+ * Sequence Set, a data structure optimized for allocating integers from a bag of sequential integer runs. A sequential
+ * integer run (with no gaps) is collapsed into one node instead of having one node per integer in the run.
+ *
+ * Self-balancing binary tree.
  */
 public class SeqSet {
     private static class Node {
@@ -24,12 +27,12 @@ public class SeqSet {
                 // We're growing to the left; check with the left child
                 if (left != null && left.boundRight == start - 1) {
                     // OK so we've got a nice block here, but we still need to find the closest node
-                    final Node closest = left.highest();
+                    final Node predecessor = left.highest();
 
                     // Collate
-                    closest.removeFromParent();
-                    start = closest.start;
-                    closest.parent.updateBoundsUpwards();
+                    predecessor.removeFromParent();
+                    start = predecessor.start;
+                    predecessor.parent.updateBoundsUpwards();
                 }
                 return;
             }
@@ -38,16 +41,18 @@ public class SeqSet {
 
                 if (right != null && right.boundLeft == end + 1) {
                     // OK it's another block here
-                    final Node closest = right.lowest();
+                    final Node successor = right.lowest();
 
                     // Collate
-                    closest.removeFromParent();
-                    end = closest.end;
-                    closest.parent.updateBoundsUpwards();
+                    successor.removeFromParent();
+                    end = successor.end;
+                    successor.parent.updateBoundsUpwards();
                 }
                 return;
             }
             else if (value < start) {
+                boundLeft = Math.min(boundLeft, value);
+
                 if (left == null) {
                     left = new Node(value, this, tree);
                 }
@@ -56,6 +61,8 @@ public class SeqSet {
                 }
             }
             else if (value > end) {
+                boundRight = Math.max(boundRight, value);
+
                 if (right == null) {
                     right = new Node(value, this, tree);
                 }

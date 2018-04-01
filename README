@@ -1,6 +1,6 @@
 # Sequence Set
 
-A data structure for allocating new unused numbers quickly.
+A data structure for allocating new unused numbers quickly and that optimizes for sequential integer runs (ie, 1, 2, 3, 4, ...)
 
 ## Motivation
 
@@ -8,7 +8,7 @@ Often I see myself trying to get the next number of something; an object, a mess
 
 ## Description
 
-The data structure is basically a binary self-balancing tree where the nodes are non-overlapping integer intervals. Rotations are used for balancing and neigboring interval nodes are merged.
+The data structure is basically a binary self-balancing tree where the nodes are non-overlapping integer intervals. Nodes with intervals that "touch" eachother are merged into one node.
 
 ## Analysis
 
@@ -21,3 +21,6 @@ The data structure is basically a binary self-balancing tree where the nodes are
 | Fetch min/max                               | O(log n)        |                  |
 ------------------------------------------------------------------------------------
 
+## TODO
+
+* Investigate why the height of the tree doesn't completely follow ceil(log2(N)). It's probably due to the balancing; the number of cases could be extended to 4 like in AVL
