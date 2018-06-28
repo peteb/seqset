@@ -34,7 +34,7 @@ The data structure is basically a binary self-balancing tree where the nodes are
 
 ## Analysis
 
-Operation                                   | Time complexity | Space complexity
+Operation                                   | Worst case time | Space complexity
 --------------------------------------------|-----------------|-----------------
 Insert (consecutive numbers)                | O(1)            | O(1)
 Insert (random non-consecutive numbers)     | O(log n)        | O(n)
